@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shelly Control</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 14px; background: #111827; color: #f3f4f6; }
+    .wrap { display: grid; gap: 10px; }
+    label { display: grid; gap: 4px; font-size: 12px; }
+    input, select { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #374151; background: #1f2937; color: #f9fafb; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .hint { font-size: 11px; color: #9ca3af; }
+    .actions { display: flex; gap: 10px; margin-top: 6px; }
+    .status { display:none; font-size: 12px; padding: 9px 10px; border-radius: 8px; background: #1f2937; border: 1px solid #374151; }
+    .status[data-kind="ok"] { border-color: #22c55e; color: #bbf7d0; }
+    .status[data-kind="error"] { border-color: #ef4444; color: #fecaca; }
+    .status[data-kind="pending"] { border-color: #f59e0b; color: #fde68a; }
+    .status[data-kind="info"] { border-color: #60a5fa; color: #dbeafe; }
+    button { border: 0; border-radius: 999px; padding: 9px 12px; cursor: pointer; }
+    button.primary { background: #22c55e; color: #052e16; font-weight: 700; }
+    button.secondary { background: #374151; color: white; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <label>Nome
+      <input id="name" placeholder="Cucina" />
+    </label>
+
+    <label>IP o host Shelly
+      <input id="host" placeholder="192.168.1.50" />
+    </label>
+
+    <div class="row">
+      <label>Generazione
+        <select id="generation">
+          <option value="gen2">Gen2+</option>
+          <option value="gen1">Gen1</option>
+        </select>
+      </label>
+      <label>Canale / relay id
+        <input id="channelId" type="number" min="0" step="1" value="0" />
+      </label>
+    </div>
+
+    <div class="row">
+      <label>Comando
+        <select id="command">
+          <option value="toggle">Toggle</option>
+          <option value="on">Solo ON</option>
+          <option value="off">Solo OFF</option>
+        </select>
+      </label>
+      <label>Polling stato (sec)
+        <input id="pollSeconds" type="number" min="5" step="1" value="15" />
+      </label>
+    </div>
+
+    <div class="row">
+      <label>Username
+        <input id="username" placeholder="opzionale" />
+      </label>
+      <label>Password
+        <input id="password" type="password" placeholder="opzionale" />
+      </label>
+    </div>
+
+    <div class="hint">Per Gen2+ il plugin usa /rpc/Switch.Set e Shelly.GetStatus. Per Gen1 usa /relay/&lt;id&gt;.</div>
+
+    <div id="status" class="status"></div>
+
+    <div class="actions">
+      <button class="primary" id="save">Salva</button>
+      <button class="secondary" id="reset">Reset</button>
+    </div>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
