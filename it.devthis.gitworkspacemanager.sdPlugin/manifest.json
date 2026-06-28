@@ -1,0 +1,193 @@
+{
+  "Author": "devthis",
+  "Name": "Git Workspace Manager",
+  "Description": "Monitor and manage local Git repositories directly from your Stream Deck",
+  "Version": "1.0.0",
+  "SDKVersion": 1,
+  "Category": "Git Workspace Manager",
+  "CategoryIcon": "assets/categoryIcon.png",
+  "Icon": "assets/pluginIcon.png",
+  "URL": "https://github.com/devthis/git-workspace-manager",
+  "CodePathMac": "plugin/index.js",
+  "CodePathWin": "plugin/index.js",
+  "OS": [
+    {
+      "Platform": "mac",
+      "MinimumVersion": "10.15"
+    },
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Software": {
+    "MinimumVersion": "3.10.188.226"
+  },
+  "Nodejs": {
+    "Version": "20"
+  },
+  "Actions": [
+    {
+      "UUID": "it.devthis.gitworkspacemanager.repo",
+      "Name": "Repository Monitor",
+      "Tooltip": "Monitor a local Git repository - shows branch, status, ahead/behind",
+      "Icon": "assets/repo.png",
+      "Controllers": ["Keypad"],
+      "PropertyInspectorPath": "propertyInspector/index.html",
+      "UserTitleEnabled": false,
+      "DisableAutomaticStates": true,
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "assets/repo.png",
+          "TitleAlignment": "middle",
+          "FontSize": "8"
+        }
+      ]
+    },
+    {
+      "UUID": "it.devthis.gitworkspacemanager.fetch",
+      "Name": "Git Fetch",
+      "Tooltip": "Fetch remote changes without merging",
+      "Icon": "assets/fetch.png",
+      "Controllers": ["Keypad"],
+      "PropertyInspectorPath": "propertyInspector/index.html",
+      "UserTitleEnabled": false,
+      "DisableAutomaticStates": true,
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "assets/fetch.png",
+          "TitleAlignment": "middle",
+          "FontSize": "10"
+        }
+      ]
+    },
+    {
+      "UUID": "it.devthis.gitworkspacemanager.pull",
+      "Name": "Git Pull",
+      "Tooltip": "Pull changes from remote (merge or rebase)",
+      "Icon": "assets/pull.png",
+      "Controllers": ["Keypad"],
+      "PropertyInspectorPath": "propertyInspector/index.html",
+      "UserTitleEnabled": false,
+      "DisableAutomaticStates": true,
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "assets/pull.png",
+          "TitleAlignment": "middle",
+          "FontSize": "10"
+        }
+      ]
+    },
+    {
+      "UUID": "it.devthis.gitworkspacemanager.push",
+      "Name": "Git Push",
+      "Tooltip": "Push local commits to remote",
+      "Icon": "assets/push.png",
+      "Controllers": ["Keypad"],
+      "PropertyInspectorPath": "propertyInspector/index.html",
+      "UserTitleEnabled": false,
+      "DisableAutomaticStates": true,
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "assets/push.png",
+          "TitleAlignment": "middle",
+          "FontSize": "10"
+        }
+      ]
+    },
+    {
+      "UUID": "it.devthis.gitworkspacemanager.sync",
+      "Name": "Git Sync",
+      "Tooltip": "Fetch, pull, and push in one action",
+      "Icon": "assets/sync.png",
+      "Controllers": ["Keypad"],
+      "PropertyInspectorPath": "propertyInspector/index.html",
+      "UserTitleEnabled": false,
+      "DisableAutomaticStates": true,
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "assets/sync.png",
+          "TitleAlignment": "middle",
+          "FontSize": "10"
+        }
+      ]
+    },
+    {
+      "UUID": "it.devthis.gitworkspacemanager.status",
+      "Name": "Git Status",
+      "Tooltip": "Show detailed repository status",
+      "Icon": "assets/status.png",
+      "Controllers": ["Keypad"],
+      "PropertyInspectorPath": "propertyInspector/index.html",
+      "UserTitleEnabled": false,
+      "DisableAutomaticStates": true,
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "assets/status.png",
+          "TitleAlignment": "middle",
+          "FontSize": "8"
+        }
+      ]
+    },
+    {
+      "UUID": "it.devthis.gitworkspacemanager.log",
+      "Name": "Git Log",
+      "Tooltip": "Show recent commit history",
+      "Icon": "assets/log.png",
+      "Controllers": ["Keypad"],
+      "PropertyInspectorPath": "propertyInspector/index.html",
+      "UserTitleEnabled": false,
+      "DisableAutomaticStates": true,
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "assets/log.png",
+          "TitleAlignment": "middle",
+          "FontSize": "8"
+        }
+      ]
+    },
+    {
+      "UUID": "it.devthis.gitworkspacemanager.folder",
+      "Name": "Open Folder",
+      "Tooltip": "Open the repository folder",
+      "Icon": "assets/folder.png",
+      "Controllers": ["Keypad"],
+      "PropertyInspectorPath": "propertyInspector/index.html",
+      "UserTitleEnabled": false,
+      "DisableAutomaticStates": true,
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "assets/folder.png",
+          "TitleAlignment": "middle",
+          "FontSize": "10"
+        }
+      ]
+    },
+    {
+      "UUID": "it.devthis.gitworkspacemanager.back",
+      "Name": "Back",
+      "Tooltip": "Return to repository monitor",
+      "Icon": "assets/back.png",
+      "Controllers": ["Keypad"],
+      "PropertyInspectorPath": "propertyInspector/index.html",
+      "UserTitleEnabled": false,
+      "DisableAutomaticStates": true,
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "assets/back.png",
+          "TitleAlignment": "middle",
+          "FontSize": "10"
+        }
+      ]
+    }
+  ]
+}

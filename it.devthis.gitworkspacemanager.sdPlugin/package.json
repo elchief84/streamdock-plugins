@@ -1,0 +1,25 @@
+{
+  "name": "it.devthis.gitworkspacemanager",
+  "version": "1.0.0",
+  "description": "Git Workspace Manager for Stream Deck - monitor and manage local Git repositories",
+  "main": "plugin/index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "clean": "rm -rf plugin/index.js plugin/services plugin/modules plugin/types.js",
+    "typecheck": "tsc --noEmit",
+    "deploy": "npm run build && python3 ../deploy.py",
+    "debug-render": "tsc && node plugin/debug-render.js"
+  },
+  "dependencies": {
+    "log4js": "^6.9.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "@types/node": "^20.14.0",
+    "@types/ws": "^8.5.10"
+  },
+  "author": "devthis",
+  "license": "MIT"
+}
