@@ -60,6 +60,27 @@ function reRenderRepo(context: string): void {
   }
 }
 
+function setRepoLoading(context: string): void {
+  const state = watcher.getState(context);
+  const entry = getWatcherEntry(context);
+  if (!state || !entry) return;
+  const settings: RepoSettings = entry.settings;
+  const displayName = storage.getDisplayName(settings);
+  const active = context === getActiveRepoContext();
+  const svg = renderer.renderRepoLoading(state, displayName, active);
+  plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
+}
+
+function onActionStart(): string | null {
+  const activeContext = getActiveRepoContext();
+  if (activeContext) setRepoLoading(activeContext);
+  return activeContext;
+}
+
+function onActionEnd(activeContext: string | null): void {
+  if (activeContext) watcher.refresh(activeContext);
+}
+
 plugin.repo = new Actions({
   default: { ...DEFAULT_SETTINGS },
 
@@ -155,10 +176,12 @@ function createSubAction(label: string, actionType: string | null): Actions {
       }
 
       if (actionType) {
+        const activeContext = onActionStart();
         const loadingSvg = renderer.renderLoading(label);
         plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(loadingSvg)}`);
 
         watcher.executeActionOnRepo(repoPath, actionType as any).then((result) => {
+          onActionEnd(activeContext);
           if (result.success) {
             const svg = renderer.renderSuccess(label);
             plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
@@ -169,6 +192,7 @@ function createSubAction(label: string, actionType: string | null): Actions {
             plugin.showAlert(context);
           }
         }).catch(() => {
+          onActionEnd(activeContext);
           const svg = renderer.renderError('Error');
           plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
           plugin.showAlert(context);

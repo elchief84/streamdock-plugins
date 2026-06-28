@@ -70,6 +70,15 @@ export class ImageRenderer {
     return this.svg('#4a4e69', false, label, '...', '', '');
   }
 
+  renderRepoLoading(state: RepoState, displayName: string, active: boolean): string {
+    const color = this.getStatusColor(state);
+    const bg = this.colorMap[color];
+    const line1 = displayName;
+    const line2 = state.branch || '...';
+    const line3 = '\u23f3 working...';
+    return this.svg(bg, active, line1, line2, line3);
+  }
+
   private svg(bg: string, active: boolean, ...lines: string[]): string {
     const borderColor = active ? 'white' : 'transparent';
     const borderWidth = active ? 5 : 0;

@@ -88,6 +88,27 @@ function reRenderRepo(context) {
         updateButton(context, state);
     }
 }
+function setRepoLoading(context) {
+    const state = watcher.getState(context);
+    const entry = getWatcherEntry(context);
+    if (!state || !entry)
+        return;
+    const settings = entry.settings;
+    const displayName = storage.getDisplayName(settings);
+    const active = context === getActiveRepoContext();
+    const svg = renderer.renderRepoLoading(state, displayName, active);
+    plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
+}
+function onActionStart() {
+    const activeContext = getActiveRepoContext();
+    if (activeContext)
+        setRepoLoading(activeContext);
+    return activeContext;
+}
+function onActionEnd(activeContext) {
+    if (activeContext)
+        watcher.refresh(activeContext);
+}
 plugin.repo = new plugin_1.Actions({
     default: { ...types_1.DEFAULT_SETTINGS },
     _willAppear({ context, payload }) {
@@ -167,9 +188,11 @@ function createSubAction(label, actionType) {
                 return;
             }
             if (actionType) {
+                const activeContext = onActionStart();
                 const loadingSvg = renderer.renderLoading(label);
                 plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(loadingSvg)}`);
                 watcher.executeActionOnRepo(repoPath, actionType).then((result) => {
+                    onActionEnd(activeContext);
                     if (result.success) {
                         const svg = renderer.renderSuccess(label);
                         plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
@@ -181,6 +204,7 @@ function createSubAction(label, actionType) {
                         plugin.showAlert(context);
                     }
                 }).catch(() => {
+                    onActionEnd(activeContext);
                     const svg = renderer.renderError('Error');
                     plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
                     plugin.showAlert(context);
