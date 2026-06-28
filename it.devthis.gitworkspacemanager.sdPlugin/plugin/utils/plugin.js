@@ -59,6 +59,14 @@ class Plugins {
         }));
     }
 
+    switchToProfile(context, profileName) {
+        this.ws.send(JSON.stringify({
+            event: "switchToProfile",
+            context,
+            payload: { profile: profileName }
+        }));
+    }
+
     setTitle(context, str, row = 0, num = 6) {
         let newStr = null;
         if (row && str) {

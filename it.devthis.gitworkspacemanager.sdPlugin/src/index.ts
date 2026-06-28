@@ -91,7 +91,7 @@ plugin.repo = new Actions({
     }
   },
 
-  keyUp({ context, payload }: any) {
+  keyUp({ context, payload, device }: any) {
     log.info('repo keyUp', context);
     const state = watcher.getState(context);
     const entry = getWatcherEntry(context);
@@ -104,6 +104,11 @@ plugin.repo = new Actions({
     if (entry) {
       setActiveRepo(context, entry.settings.repoPath);
       plugin.showOk(context);
+
+      if (entry.settings.targetProfile && device) {
+        plugin.switchToProfile(context, entry.settings.targetProfile);
+      }
+
       setTimeout(() => {
         watcher.refresh(context);
       }, 100);

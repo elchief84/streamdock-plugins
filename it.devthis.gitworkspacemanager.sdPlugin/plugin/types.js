@@ -8,4 +8,5 @@ exports.DEFAULT_SETTINGS = {
     pullStrategy: 'merge',
     autoFetch: true,
     autoReturn: true,
+    targetProfile: '',
 };

@@ -15,6 +15,7 @@ export class Plugins {
     showOk(context: string): void;
     sendToPropertyInspector(payload: any): void;
     openUrl(url: string): void;
+    switchToProfile(context: string, profileName: string): void;
     ws: any;
 }
 

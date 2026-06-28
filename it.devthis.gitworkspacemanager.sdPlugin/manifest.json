@@ -36,7 +36,7 @@
       "PropertyInspectorPath": "propertyInspector/index.html",
       "UserTitleEnabled": false,
       "DisableAutomaticStates": true,
-      "SupportedInMultiActions": false,
+      "SupportedInMultiActions": true,
       "States": [
         {
           "Image": "assets/repo.png",
@@ -51,10 +51,9 @@
       "Tooltip": "Fetch remote changes without merging",
       "Icon": "assets/fetch.png",
       "Controllers": ["Keypad"],
-      "PropertyInspectorPath": "propertyInspector/index.html",
       "UserTitleEnabled": false,
       "DisableAutomaticStates": true,
-      "SupportedInMultiActions": false,
+      "SupportedInMultiActions": true,
       "States": [
         {
           "Image": "assets/fetch.png",
@@ -69,10 +68,9 @@
       "Tooltip": "Pull changes from remote (merge or rebase)",
       "Icon": "assets/pull.png",
       "Controllers": ["Keypad"],
-      "PropertyInspectorPath": "propertyInspector/index.html",
       "UserTitleEnabled": false,
       "DisableAutomaticStates": true,
-      "SupportedInMultiActions": false,
+      "SupportedInMultiActions": true,
       "States": [
         {
           "Image": "assets/pull.png",
@@ -87,10 +85,9 @@
       "Tooltip": "Push local commits to remote",
       "Icon": "assets/push.png",
       "Controllers": ["Keypad"],
-      "PropertyInspectorPath": "propertyInspector/index.html",
       "UserTitleEnabled": false,
       "DisableAutomaticStates": true,
-      "SupportedInMultiActions": false,
+      "SupportedInMultiActions": true,
       "States": [
         {
           "Image": "assets/push.png",
@@ -105,10 +102,9 @@
       "Tooltip": "Fetch, pull, and push in one action",
       "Icon": "assets/sync.png",
       "Controllers": ["Keypad"],
-      "PropertyInspectorPath": "propertyInspector/index.html",
       "UserTitleEnabled": false,
       "DisableAutomaticStates": true,
-      "SupportedInMultiActions": false,
+      "SupportedInMultiActions": true,
       "States": [
         {
           "Image": "assets/sync.png",
@@ -123,10 +119,9 @@
       "Tooltip": "Show detailed repository status",
       "Icon": "assets/status.png",
       "Controllers": ["Keypad"],
-      "PropertyInspectorPath": "propertyInspector/index.html",
       "UserTitleEnabled": false,
       "DisableAutomaticStates": true,
-      "SupportedInMultiActions": false,
+      "SupportedInMultiActions": true,
       "States": [
         {
           "Image": "assets/status.png",
@@ -141,10 +136,9 @@
       "Tooltip": "Show recent commit history",
       "Icon": "assets/log.png",
       "Controllers": ["Keypad"],
-      "PropertyInspectorPath": "propertyInspector/index.html",
       "UserTitleEnabled": false,
       "DisableAutomaticStates": true,
-      "SupportedInMultiActions": false,
+      "SupportedInMultiActions": true,
       "States": [
         {
           "Image": "assets/log.png",
@@ -159,10 +153,9 @@
       "Tooltip": "Open the repository folder",
       "Icon": "assets/folder.png",
       "Controllers": ["Keypad"],
-      "PropertyInspectorPath": "propertyInspector/index.html",
       "UserTitleEnabled": false,
       "DisableAutomaticStates": true,
-      "SupportedInMultiActions": false,
+      "SupportedInMultiActions": true,
       "States": [
         {
           "Image": "assets/folder.png",
@@ -177,10 +170,9 @@
       "Tooltip": "Return to repository monitor",
       "Icon": "assets/back.png",
       "Controllers": ["Keypad"],
-      "PropertyInspectorPath": "propertyInspector/index.html",
       "UserTitleEnabled": false,
       "DisableAutomaticStates": true,
-      "SupportedInMultiActions": false,
+      "SupportedInMultiActions": true,
       "States": [
         {
           "Image": "assets/back.png",

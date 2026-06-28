@@ -9,6 +9,7 @@ const $local = false, $back = true, $dom = {
     pullStrategy: $('#pullStrategy'),
     autoFetch: $('#autoFetch'),
     autoReturn: $('#autoReturn'),
+    targetProfile: $('#targetProfile'),
     saveBtn: $('#saveBtn'),
     statusMsg: $('#statusMsg'),
 };
@@ -32,6 +33,7 @@ function saveSettings() {
         pullStrategy: $dom.pullStrategy.value,
         autoFetch: $dom.autoFetch.checked,
         autoReturn: $dom.autoReturn.checked,
+        targetProfile: $dom.targetProfile.value.trim(),
     };
 
     $websocket.sendToPlugin({
@@ -56,6 +58,7 @@ const $propEvent = {
         $dom.pullStrategy.value = settings.pullStrategy || 'merge';
         $dom.autoFetch.checked = settings.autoFetch !== false;
         $dom.autoReturn.checked = settings.autoReturn !== false;
+        $dom.targetProfile.value = settings.targetProfile || '';
 
         $dom.main.style.display = 'block';
     },
@@ -69,6 +72,7 @@ const $propEvent = {
             $dom.pullStrategy.value = settings.pullStrategy || 'merge';
             $dom.autoFetch.checked = settings.autoFetch !== false;
             $dom.autoReturn.checked = settings.autoReturn !== false;
+            $dom.targetProfile.value = settings.targetProfile || '';
             currentSettings = settings;
         }
     },
@@ -82,3 +86,4 @@ $dom.refreshInterval.addEventListener('change', saveSettings);
 $dom.pullStrategy.addEventListener('change', saveSettings);
 $dom.autoFetch.addEventListener('change', saveSettings);
 $dom.autoReturn.addEventListener('change', saveSettings);
+$dom.targetProfile.addEventListener('change', saveSettings);
