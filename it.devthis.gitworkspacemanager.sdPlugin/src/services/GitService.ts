@@ -1,7 +1,7 @@
 import { execSync, exec } from 'child_process';
 import { promisify } from 'util';
 import * as fs from 'fs';
-import { RepoState, LogEntry } from '../types';
+import { RepoState } from '../types';
 
 const execAsync = promisify(exec);
 
@@ -141,26 +141,6 @@ export class GitService {
     }
   }
 
-  async getLog(repoPath: string, count: number = 5, offset: number = 0): Promise<LogEntry[]> {
-    try {
-      const format = '--format=%h|%an|%s|%ar';
-      const skip = offset > 0 ? `--skip=${offset}` : '';
-      const { stdout } = await execAsync(
-        `"${this.gitPath}" -C "${repoPath}" log ${skip} -${count} ${format}`
-      );
-      return stdout
-        .trim()
-        .split('\n')
-        .filter(l => l.length > 0)
-        .map(line => {
-          const [hash, author, message, date] = line.split('|');
-          return { hash, author, message, date };
-        });
-    } catch {
-      return [];
-    }
-  }
-
   async fetch(repoPath: string): Promise<{ success: boolean; error?: string }> {
     try {
       await execAsync(`"${this.gitPath}" -C "${repoPath}" fetch --quiet`, { timeout: 30000 });
@@ -213,7 +193,7 @@ export class GitService {
   }
 
   isNoUpstream(ahead: number, behind: number, upstream: string | null): boolean {
-    return upstream === null && (ahead > 0 || behind === 0 && ahead === 0);
+    return upstream === null;
   }
 
   async getState(repoPath: string): Promise<RepoState> {
@@ -223,7 +203,7 @@ export class GitService {
       remoteUrl: null, detachedHead: false, mergeInProgress: false,
       rebaseInProgress: false, cherryPickInProgress: false, noUpstream: false,
       valid: false, error: 'Repository not found', lastFetch: null,
-      statusLines: [], logEntries: [], logOffset: 0,
+      statusLines: [],
     };
 
     const isValid = await this.isValidRepo(repoPath);
@@ -274,13 +254,11 @@ export class GitService {
       mergeInProgress,
       rebaseInProgress,
       cherryPickInProgress,
-      noUpstream: upstream === null && (aheadBehind.ahead > 0 || aheadBehind.behind > 0 || dirtyResult.dirty),
+      noUpstream: upstream === null,
       valid: true,
       error: null,
       lastFetch: null,
       statusLines,
-      logEntries: [],
-      logOffset: 0,
     };
   }
 }

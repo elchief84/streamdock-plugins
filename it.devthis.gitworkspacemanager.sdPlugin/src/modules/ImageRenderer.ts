@@ -1,4 +1,4 @@
-import { RepoState, StatusColor, LogEntry } from '../types';
+import { RepoState, StatusColor } from '../types';
 
 export class ImageRenderer {
   private width = 100;
@@ -68,31 +68,6 @@ export class ImageRenderer {
 
   renderLoading(label: string): string {
     return this.svg('#4a4e69', false, label, '...', '', '');
-  }
-
-  renderStatus(state: RepoState): string {
-    const lines: string[] = [];
-    lines.push(`Branch: ${state.branch}`);
-    lines.push(`\u2191${state.ahead} \u2193${state.behind}`);
-    if (state.dirtyFiles > 0) {
-      lines.push(`Mod: ${state.dirtyFiles} files`);
-    }
-    if (state.stagedFiles > 0) {
-      lines.push(`Staged: ${state.stagedFiles}`);
-    }
-    if (state.conflicts) lines.push('\u26a0 Conflicts!');
-
-    return this.svg('#2a2a2a', false, ...lines.slice(0, 4));
-  }
-
-  renderLog(entries: LogEntry[], offset: number): string {
-    const bg = '#2a2a2a';
-    const lines: string[] = [];
-    for (const entry of entries) {
-      lines.push(`${entry.hash} ${entry.message}`);
-    }
-    while (lines.length < 4) lines.push('');
-    return this.svg(bg, false, ...lines.slice(0, 4));
   }
 
   private svg(bg: string, active: boolean, ...lines: string[]): string {

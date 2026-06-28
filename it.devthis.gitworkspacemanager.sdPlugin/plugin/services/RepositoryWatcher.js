@@ -119,15 +119,6 @@ class RepositoryWatcher {
     getState(context) {
         return this.watchers.get(context)?.state || null;
     }
-    async loadLog(context, offset = 0) {
-        const entry = this.watchers.get(context);
-        if (!entry || !entry.settings.repoPath)
-            return;
-        const entries = await this.git.getLog(entry.settings.repoPath, 5, offset);
-        entry.state.logEntries = entries;
-        entry.state.logOffset = offset;
-        entry.callback(context, entry.state);
-    }
     startPolling(entry) {
         const intervalMs = Math.max(entry.settings.refreshInterval, 5) * 1000;
         entry.timer = setInterval(() => {
@@ -141,7 +132,6 @@ class RepositoryWatcher {
             remoteUrl: null, detachedHead: false, mergeInProgress: false,
             rebaseInProgress: false, cherryPickInProgress: false, noUpstream: false,
             valid: false, error: null, lastFetch: null, statusLines: [],
-            logEntries: [], logOffset: 0,
         };
     }
 }

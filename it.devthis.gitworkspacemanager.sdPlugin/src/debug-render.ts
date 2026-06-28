@@ -1,5 +1,5 @@
 import { ImageRenderer } from './modules/ImageRenderer';
-import { RepoState, LogEntry } from './types';
+import { RepoState } from './types';
 import * as fs from 'fs';
 import * as path from 'path';
 import { exec } from 'child_process';
@@ -27,8 +27,6 @@ function makeState(overrides: Partial<RepoState> = {}): RepoState {
     error: null,
     lastFetch: Date.now(),
     statusLines: [],
-    logEntries: [],
-    logOffset: 0,
     ...overrides,
   };
 }
@@ -62,22 +60,10 @@ const scenarios: { label: string; svg: string }[] = [
   { label: 'Success check', svg: renderer.renderSuccess('Synced') },
   { label: 'Error cross', svg: renderer.renderError('Failed') },
   { label: 'Loading dots', svg: renderer.renderLoading('Fetching') },
-  { label: 'Status view', svg: renderer.renderStatus(makeState({ repoName: 'backend', branch: 'main', ahead: 2, behind: 3, dirtyFiles: 4, stagedFiles: 2 })) },
   { label: 'Action+Repo: Fetch on my-proj', svg: renderer.renderActionWithRepo('Fetch', 'my-project') },
   { label: 'Action+Repo: Pull on backend', svg: renderer.renderActionWithRepo('Pull', 'backend') },
   { label: 'Action+Repo: Sync on api', svg: renderer.renderActionWithRepo('Sync', 'api') },
-  {
-    label: 'Log view',
-    svg: renderer.renderLog(
-      [
-        { hash: 'a1b2c3d', author: 'Alice', message: 'Fix login bug', date: '2h ago' },
-        { hash: 'e4f5g6h', author: 'Bob', message: 'Add tests', date: '5h ago' },
-        { hash: 'i7j8k9l', author: 'Alice', message: 'Refactor auth', date: '1d ago' },
-        { hash: 'm0n1o2p', author: 'Carol', message: 'Update deps', date: '2d ago' },
-      ],
-      0
-    ),
-  },
+  { label: 'Active repo border (white)', svg: renderer.renderRepoButton(makeState({ repoName: 'backend', branch: 'main'} ), 'backend', true) },
 ];
 
 let html = `<!DOCTYPE html>

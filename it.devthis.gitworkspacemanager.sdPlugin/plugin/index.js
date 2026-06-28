@@ -193,84 +193,6 @@ plugin.fetch = createSubAction('Fetch', 'fetch');
 plugin.pull = createSubAction('Pull', 'pull');
 plugin.push = createSubAction('Push', 'push');
 plugin.sync = createSubAction('Sync', 'sync');
-const logAction = Object.assign(new plugin_1.Actions({
-    default: {},
-    _willAppear({ context, payload }) {
-        const repoPath = getActiveRepoPath();
-        const svg = repoPath
-            ? renderer.renderActionWithRepo('Log', repoPath.split(/[/\\]/).pop() || repoPath)
-            : renderer.renderActionButton('Log', '#4a4a4a');
-        plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
-        logAction.logOffset = 0;
-    },
-    _willDisappear({ context }) { },
-    keyUp({ context, payload }) {
-        const repoPath = getActiveRepoPath();
-        if (!repoPath) {
-            const svg = renderer.renderError('No repo');
-            plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
-            plugin.showAlert(context);
-            return;
-        }
-        const loadingSvg = renderer.renderLoading('Log');
-        plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(loadingSvg)}`);
-        git.getLog(repoPath, 5, logAction.logOffset || 0).then((entries) => {
-            const svg = renderer.renderLog(entries, logAction.logOffset || 0);
-            plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
-        }).catch(() => {
-            const svg = renderer.renderError('Error');
-            plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
-            plugin.showAlert(context);
-        });
-    },
-    dialRotate({ context, payload }) {
-        const ticks = payload.ticks || 0;
-        if (ticks > 0) {
-            logAction.logOffset = Math.max(0, (logAction.logOffset || 0) - 5);
-        }
-        else if (ticks < 0) {
-            logAction.logOffset = (logAction.logOffset || 0) + 5;
-        }
-        const repoPath = getActiveRepoPath();
-        if (!repoPath)
-            return;
-        git.getLog(repoPath, 5, logAction.logOffset || 0).then((entries) => {
-            const svg = renderer.renderLog(entries, logAction.logOffset || 0);
-            plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
-        }).catch(() => { });
-    },
-}), { logOffset: 0 });
-plugin.log = logAction;
-plugin.status = new plugin_1.Actions({
-    default: {},
-    _willAppear({ context, payload }) {
-        const repoPath = getActiveRepoPath();
-        const svg = repoPath
-            ? renderer.renderActionWithRepo('Status', repoPath.split(/[/\\]/).pop() || repoPath)
-            : renderer.renderActionButton('Status', '#4a4a4a');
-        plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
-    },
-    _willDisappear({ context }) { },
-    keyUp({ context, payload }) {
-        const repoPath = getActiveRepoPath();
-        if (!repoPath) {
-            const svg = renderer.renderError('No repo');
-            plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
-            plugin.showAlert(context);
-            return;
-        }
-        const loadingSvg = renderer.renderLoading('Status');
-        plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(loadingSvg)}`);
-        git.getState(repoPath).then((state) => {
-            const svg = renderer.renderStatus(state);
-            plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
-        }).catch(() => {
-            const svg = renderer.renderError('Error');
-            plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
-            plugin.showAlert(context);
-        });
-    },
-});
 plugin.folder = new plugin_1.Actions({
     default: {},
     _willAppear({ context, payload }) {
@@ -299,19 +221,5 @@ plugin.folder = new plugin_1.Actions({
             plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
             plugin.showAlert(context);
         }
-    },
-});
-plugin.back = new plugin_1.Actions({
-    default: {},
-    _willAppear({ context, payload }) {
-        const repoPath = getActiveRepoPath();
-        const svg = repoPath
-            ? renderer.renderActionWithRepo('Back', repoPath.split(/[/\\]/).pop() || repoPath)
-            : renderer.renderActionButton('Back', '#4a4a4a');
-        plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
-    },
-    _willDisappear({ context }) { },
-    keyUp({ context, payload }) {
-        plugin.showOk(context);
     },
 });

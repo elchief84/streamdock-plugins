@@ -28,18 +28,7 @@ export interface RepoState {
   error: string | null;
   lastFetch: number | null;
   statusLines: string[];
-  logEntries: LogEntry[];
-  logOffset: number;
 }
-
-export interface LogEntry {
-  hash: string;
-  author: string;
-  message: string;
-  date: string;
-}
-
-export type ActionType = 'fetch' | 'pull' | 'push' | 'sync' | 'status' | 'log' | 'folder' | 'back';
 
 export type StatusColor = 'green' | 'blue' | 'yellow' | 'orange' | 'red' | 'gray';
 

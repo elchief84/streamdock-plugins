@@ -74,30 +74,6 @@ class ImageRenderer {
     renderLoading(label) {
         return this.svg('#4a4e69', false, label, '...', '', '');
     }
-    renderStatus(state) {
-        const lines = [];
-        lines.push(`Branch: ${state.branch}`);
-        lines.push(`\u2191${state.ahead} \u2193${state.behind}`);
-        if (state.dirtyFiles > 0) {
-            lines.push(`Mod: ${state.dirtyFiles} files`);
-        }
-        if (state.stagedFiles > 0) {
-            lines.push(`Staged: ${state.stagedFiles}`);
-        }
-        if (state.conflicts)
-            lines.push('\u26a0 Conflicts!');
-        return this.svg('#2a2a2a', false, ...lines.slice(0, 4));
-    }
-    renderLog(entries, offset) {
-        const bg = '#2a2a2a';
-        const lines = [];
-        for (const entry of entries) {
-            lines.push(`${entry.hash} ${entry.message}`);
-        }
-        while (lines.length < 4)
-            lines.push('');
-        return this.svg(bg, false, ...lines.slice(0, 4));
-    }
     svg(bg, active, ...lines) {
         const borderColor = active ? 'white' : 'transparent';
         const borderWidth = active ? 5 : 0;

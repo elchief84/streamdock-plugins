@@ -164,24 +164,6 @@ class GitService {
             return [];
         }
     }
-    async getLog(repoPath, count = 5, offset = 0) {
-        try {
-            const format = '--format=%h|%an|%s|%ar';
-            const skip = offset > 0 ? `--skip=${offset}` : '';
-            const { stdout } = await execAsync(`"${this.gitPath}" -C "${repoPath}" log ${skip} -${count} ${format}`);
-            return stdout
-                .trim()
-                .split('\n')
-                .filter(l => l.length > 0)
-                .map(line => {
-                const [hash, author, message, date] = line.split('|');
-                return { hash, author, message, date };
-            });
-        }
-        catch {
-            return [];
-        }
-    }
     async fetch(repoPath) {
         try {
             await execAsync(`"${this.gitPath}" -C "${repoPath}" fetch --quiet`, { timeout: 30000 });
@@ -234,7 +216,7 @@ class GitService {
         }
     }
     isNoUpstream(ahead, behind, upstream) {
-        return upstream === null && (ahead > 0 || behind === 0 && ahead === 0);
+        return upstream === null;
     }
     async getState(repoPath) {
         const invalidState = {
@@ -243,7 +225,7 @@ class GitService {
             remoteUrl: null, detachedHead: false, mergeInProgress: false,
             rebaseInProgress: false, cherryPickInProgress: false, noUpstream: false,
             valid: false, error: 'Repository not found', lastFetch: null,
-            statusLines: [], logEntries: [], logOffset: 0,
+            statusLines: [],
         };
         const isValid = await this.isValidRepo(repoPath);
         if (!isValid) {
@@ -278,13 +260,11 @@ class GitService {
             mergeInProgress,
             rebaseInProgress,
             cherryPickInProgress,
-            noUpstream: upstream === null && (aheadBehind.ahead > 0 || aheadBehind.behind > 0 || dirtyResult.dirty),
+            noUpstream: upstream === null,
             valid: true,
             error: null,
             lastFetch: null,
             statusLines,
-            logEntries: [],
-            logOffset: 0,
         };
     }
 }

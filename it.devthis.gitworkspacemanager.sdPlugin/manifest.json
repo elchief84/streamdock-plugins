@@ -114,40 +114,6 @@
       ]
     },
     {
-      "UUID": "it.devthis.gitworkspacemanager.status",
-      "Name": "Git Status",
-      "Tooltip": "Show detailed repository status",
-      "Icon": "assets/status.png",
-      "Controllers": ["Keypad"],
-      "UserTitleEnabled": false,
-      "DisableAutomaticStates": true,
-      "SupportedInMultiActions": true,
-      "States": [
-        {
-          "Image": "assets/status.png",
-          "TitleAlignment": "middle",
-          "FontSize": "8"
-        }
-      ]
-    },
-    {
-      "UUID": "it.devthis.gitworkspacemanager.log",
-      "Name": "Git Log",
-      "Tooltip": "Show recent commit history",
-      "Icon": "assets/log.png",
-      "Controllers": ["Keypad"],
-      "UserTitleEnabled": false,
-      "DisableAutomaticStates": true,
-      "SupportedInMultiActions": true,
-      "States": [
-        {
-          "Image": "assets/log.png",
-          "TitleAlignment": "middle",
-          "FontSize": "8"
-        }
-      ]
-    },
-    {
       "UUID": "it.devthis.gitworkspacemanager.folder",
       "Name": "Open Folder",
       "Tooltip": "Open the repository folder",
@@ -159,23 +125,6 @@
       "States": [
         {
           "Image": "assets/folder.png",
-          "TitleAlignment": "middle",
-          "FontSize": "10"
-        }
-      ]
-    },
-    {
-      "UUID": "it.devthis.gitworkspacemanager.back",
-      "Name": "Back",
-      "Tooltip": "Return to repository monitor",
-      "Icon": "assets/back.png",
-      "Controllers": ["Keypad"],
-      "UserTitleEnabled": false,
-      "DisableAutomaticStates": true,
-      "SupportedInMultiActions": true,
-      "States": [
-        {
-          "Image": "assets/back.png",
           "TitleAlignment": "middle",
           "FontSize": "10"
         }
