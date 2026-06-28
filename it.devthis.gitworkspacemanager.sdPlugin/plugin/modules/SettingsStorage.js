@@ -15,7 +15,6 @@ class SettingsStorage {
             pullStrategy: settings.pullStrategy === 'rebase' ? 'rebase' : this.defaultSettings.pullStrategy,
             autoFetch: typeof settings.autoFetch === 'boolean' ? settings.autoFetch : this.defaultSettings.autoFetch,
             autoReturn: typeof settings.autoReturn === 'boolean' ? settings.autoReturn : this.defaultSettings.autoReturn,
-            targetProfile: settings.targetProfile || '',
         };
     }
     sanitizeForLog(settings) {

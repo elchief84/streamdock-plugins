@@ -26,7 +26,7 @@ export class ImageRenderer {
     gray: '#4a4e69',
   };
 
-  renderRepoButton(state: RepoState, displayName: string): string {
+  renderRepoButton(state: RepoState, displayName: string, active: boolean = false): string {
     const color = this.getStatusColor(state);
     const bg = this.colorMap[color];
 
@@ -47,24 +47,27 @@ export class ImageRenderer {
     } else {
       line3 = `\u2191${state.ahead} \u2193${state.behind}`;
     }
-
-    return this.svg(bg, line1, line2, line3);
+    return this.svg(bg, active, line1, line2, line3);
   }
 
   renderActionButton(label: string, bgColor: string = '#2a2a2a'): string {
-    return this.svg(bgColor, label, '', '', '');
+    return this.svg(bgColor, false, label, '', '', '');
+  }
+
+  renderActionWithRepo(label: string, repoName: string): string {
+    return this.svg('#2d6a4f', false, label, repoName);
   }
 
   renderSuccess(label: string): string {
-    return this.svg('#2d6a4f', '\u2714', label, '', '');
+    return this.svg('#2d6a4f', false, '\u2714', label, '', '');
   }
 
   renderError(label: string): string {
-    return this.svg('#9b2226', '\u2718', label, '', '');
+    return this.svg('#9b2226', false, '\u2718', label, '', '');
   }
 
   renderLoading(label: string): string {
-    return this.svg('#4a4e69', label, '...', '', '');
+    return this.svg('#4a4e69', false, label, '...', '', '');
   }
 
   renderStatus(state: RepoState): string {
@@ -79,7 +82,7 @@ export class ImageRenderer {
     }
     if (state.conflicts) lines.push('\u26a0 Conflicts!');
 
-    return this.svg('#2a2a2a', ...lines.slice(0, 4));
+    return this.svg('#2a2a2a', false, ...lines.slice(0, 4));
   }
 
   renderLog(entries: LogEntry[], offset: number): string {
@@ -89,15 +92,22 @@ export class ImageRenderer {
       lines.push(`${entry.hash} ${entry.message}`);
     }
     while (lines.length < 4) lines.push('');
-    return this.svg(bg, ...lines.slice(0, 4));
+    return this.svg(bg, false, ...lines.slice(0, 4));
   }
 
-  private svg(bg: string, ...lines: string[]): string {
+  private svg(bg: string, active: boolean, ...lines: string[]): string {
+    const borderColor = active ? 'white' : 'transparent';
+    const borderWidth = active ? 5 : 0;
     const activeLines = lines.filter(l => l);
     const count = activeLines.length;
+    const borderRect = active
+      ? `<rect x="0" y="0" width="100%" height="100%" fill="none" stroke="${borderColor}" stroke-width="${borderWidth}" />`
+      : '';
+
     if (count === 0) {
       return `<svg width="${this.width}" height="${this.height}" viewBox="0 0 ${this.width} ${this.height}" xmlns="http://www.w3.org/2000/svg">
   <rect width="100%" height="100%" fill="${bg}" />
+  ${borderRect}
 </svg>`;
     }
 
@@ -116,6 +126,7 @@ export class ImageRenderer {
 
     return `<svg width="${this.width}" height="${this.height}" viewBox="0 0 ${this.width} ${this.height}" xmlns="http://www.w3.org/2000/svg">
   <rect width="100%" height="100%" fill="${bg}" />
+  ${borderRect}
   ${textElements}
 </svg>`;
   }

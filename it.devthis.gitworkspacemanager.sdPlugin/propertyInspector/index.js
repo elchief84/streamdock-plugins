@@ -9,7 +9,6 @@ const $local = false, $back = true, $dom = {
     pullStrategy: $('#pullStrategy'),
     autoFetch: $('#autoFetch'),
     autoReturn: $('#autoReturn'),
-    targetProfile: $('#targetProfile'),
     saveBtn: $('#saveBtn'),
     statusMsg: $('#statusMsg'),
 };
@@ -25,6 +24,16 @@ function showStatus(msg, isError) {
     }, 3000);
 }
 
+function applySettings(settings) {
+    $dom.repoPath.value = settings.repoPath || '';
+    $dom.friendlyName.value = settings.friendlyName || '';
+    $dom.refreshInterval.value = settings.refreshInterval || 60;
+    $dom.pullStrategy.value = settings.pullStrategy || 'merge';
+    $dom.autoFetch.checked = settings.autoFetch !== false;
+    $dom.autoReturn.checked = settings.autoReturn !== false;
+    currentSettings = settings;
+}
+
 function saveSettings() {
     const settings = {
         repoPath: $dom.repoPath.value.trim(),
@@ -33,13 +42,9 @@ function saveSettings() {
         pullStrategy: $dom.pullStrategy.value,
         autoFetch: $dom.autoFetch.checked,
         autoReturn: $dom.autoReturn.checked,
-        targetProfile: $dom.targetProfile.value.trim(),
     };
 
-    $websocket.sendToPlugin({
-        save: true,
-        ...settings
-    });
+    $websocket.saveData(settings);
     currentSettings = settings;
     showStatus('Saved', false);
 }
@@ -49,41 +54,21 @@ const $propEvent = {
     },
 
     didReceiveSettings(data) {
-        const settings = data.settings || {};
-        currentSettings = settings;
-
-        $dom.repoPath.value = settings.repoPath || '';
-        $dom.friendlyName.value = settings.friendlyName || '';
-        $dom.refreshInterval.value = settings.refreshInterval || 60;
-        $dom.pullStrategy.value = settings.pullStrategy || 'merge';
-        $dom.autoFetch.checked = settings.autoFetch !== false;
-        $dom.autoReturn.checked = settings.autoReturn !== false;
-        $dom.targetProfile.value = settings.targetProfile || '';
-
+        applySettings(data.settings || {});
         $dom.main.style.display = 'block';
     },
 
     sendToPropertyInspector(data) {
         if (data.settings) {
-            const settings = data.settings;
-            $dom.repoPath.value = settings.repoPath || '';
-            $dom.friendlyName.value = settings.friendlyName || '';
-            $dom.refreshInterval.value = settings.refreshInterval || 60;
-            $dom.pullStrategy.value = settings.pullStrategy || 'merge';
-            $dom.autoFetch.checked = settings.autoFetch !== false;
-            $dom.autoReturn.checked = settings.autoReturn !== false;
-            $dom.targetProfile.value = settings.targetProfile || '';
-            currentSettings = settings;
+            applySettings(data.settings);
         }
     },
 };
 
 $dom.saveBtn.addEventListener('click', saveSettings);
-
 $dom.repoPath.addEventListener('change', saveSettings);
 $dom.friendlyName.addEventListener('change', saveSettings);
 $dom.refreshInterval.addEventListener('change', saveSettings);
 $dom.pullStrategy.addEventListener('change', saveSettings);
 $dom.autoFetch.addEventListener('change', saveSettings);
 $dom.autoReturn.addEventListener('change', saveSettings);
-$dom.targetProfile.addEventListener('change', saveSettings);

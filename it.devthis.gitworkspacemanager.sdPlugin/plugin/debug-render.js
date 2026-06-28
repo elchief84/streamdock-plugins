@@ -94,6 +94,9 @@ const scenarios = [
     { label: 'Error cross', svg: renderer.renderError('Failed') },
     { label: 'Loading dots', svg: renderer.renderLoading('Fetching') },
     { label: 'Status view', svg: renderer.renderStatus(makeState({ repoName: 'backend', branch: 'main', ahead: 2, behind: 3, dirtyFiles: 4, stagedFiles: 2 })) },
+    { label: 'Action+Repo: Fetch on my-proj', svg: renderer.renderActionWithRepo('Fetch', 'my-project') },
+    { label: 'Action+Repo: Pull on backend', svg: renderer.renderActionWithRepo('Pull', 'backend') },
+    { label: 'Action+Repo: Sync on api', svg: renderer.renderActionWithRepo('Sync', 'api') },
     {
         label: 'Log view',
         svg: renderer.renderLog([

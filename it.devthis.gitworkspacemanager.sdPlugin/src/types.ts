@@ -6,7 +6,6 @@ export interface RepoSettings {
   pullStrategy: 'merge' | 'rebase';
   autoFetch: boolean;
   autoReturn: boolean;
-  targetProfile: string;
 }
 
 export interface RepoState {
@@ -51,7 +50,6 @@ export const DEFAULT_SETTINGS: RepoSettings = {
   pullStrategy: 'merge',
   autoFetch: true,
   autoReturn: true,
-  targetProfile: '',
 };
 
 export interface GlobalSettings {

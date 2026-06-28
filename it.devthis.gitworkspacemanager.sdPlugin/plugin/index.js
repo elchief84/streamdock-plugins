@@ -67,6 +67,10 @@ function getActiveRepoPath() {
     const gs = ensureGlobalSettings();
     return gs.activeRepoPath || null;
 }
+function getActiveRepoContext() {
+    const gs = ensureGlobalSettings();
+    return gs.activeRepoContext || null;
+}
 function getWatcherEntry(context) {
     return watcher.getEntry(context) || null;
 }
@@ -74,8 +78,15 @@ function updateButton(context, state) {
     const entry = getWatcherEntry(context);
     const settings = entry?.settings || { ...types_1.DEFAULT_SETTINGS };
     const displayName = storage.getDisplayName(settings);
-    const svg = renderer.renderRepoButton(state, displayName);
+    const active = context === getActiveRepoContext();
+    const svg = renderer.renderRepoButton(state, displayName, active);
     plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
+}
+function reRenderRepo(context) {
+    const state = watcher.getState(context);
+    if (state) {
+        updateButton(context, state);
+    }
 }
 plugin.repo = new plugin_1.Actions({
     default: { ...types_1.DEFAULT_SETTINGS },
@@ -107,11 +118,6 @@ plugin.repo = new plugin_1.Actions({
         }
     },
     sendToPlugin({ payload, context }) {
-        if (payload.save) {
-            const settings = storage.validate(payload);
-            plugin_1.log.info('repo sendToPlugin save', context, settings.repoPath);
-            plugin.setSettings(context, settings);
-        }
     },
     keyUp({ context, payload, device }) {
         plugin_1.log.info('repo keyUp', context);
@@ -123,11 +129,13 @@ plugin.repo = new plugin_1.Actions({
             return;
         }
         if (entry) {
+            const oldContext = getActiveRepoContext();
             setActiveRepo(context, entry.settings.repoPath);
             plugin.showOk(context);
-            if (entry.settings.targetProfile && device) {
-                plugin.switchToProfile(context, entry.settings.targetProfile);
+            if (oldContext && oldContext !== context) {
+                reRenderRepo(oldContext);
             }
+            reRenderRepo(context);
             setTimeout(() => {
                 watcher.refresh(context);
             }, 100);
@@ -138,8 +146,16 @@ function createSubAction(label, actionType) {
     return new plugin_1.Actions({
         default: {},
         _willAppear({ context, payload }) {
-            const svg = renderer.renderActionButton(label);
-            plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
+            const repoPath = getActiveRepoPath();
+            if (repoPath) {
+                const name = repoPath.split(/[/\\]/).pop() || repoPath;
+                const svg = renderer.renderActionWithRepo(label, name);
+                plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
+            }
+            else {
+                const svg = renderer.renderActionButton(label, '#4a4a4a');
+                plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
+            }
         },
         _willDisappear({ context }) { },
         keyUp({ context, payload }) {
@@ -180,7 +196,10 @@ plugin.sync = createSubAction('Sync', 'sync');
 const logAction = Object.assign(new plugin_1.Actions({
     default: {},
     _willAppear({ context, payload }) {
-        const svg = renderer.renderActionButton('Log');
+        const repoPath = getActiveRepoPath();
+        const svg = repoPath
+            ? renderer.renderActionWithRepo('Log', repoPath.split(/[/\\]/).pop() || repoPath)
+            : renderer.renderActionButton('Log', '#4a4a4a');
         plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
         logAction.logOffset = 0;
     },
@@ -225,7 +244,10 @@ plugin.log = logAction;
 plugin.status = new plugin_1.Actions({
     default: {},
     _willAppear({ context, payload }) {
-        const svg = renderer.renderActionButton('Status');
+        const repoPath = getActiveRepoPath();
+        const svg = repoPath
+            ? renderer.renderActionWithRepo('Status', repoPath.split(/[/\\]/).pop() || repoPath)
+            : renderer.renderActionButton('Status', '#4a4a4a');
         plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
     },
     _willDisappear({ context }) { },
@@ -252,7 +274,10 @@ plugin.status = new plugin_1.Actions({
 plugin.folder = new plugin_1.Actions({
     default: {},
     _willAppear({ context, payload }) {
-        const svg = renderer.renderActionButton('Folder');
+        const repoPath = getActiveRepoPath();
+        const svg = repoPath
+            ? renderer.renderActionWithRepo('Folder', repoPath.split(/[/\\]/).pop() || repoPath)
+            : renderer.renderActionButton('Folder', '#4a4a4a');
         plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
     },
     _willDisappear({ context }) { },
@@ -279,7 +304,10 @@ plugin.folder = new plugin_1.Actions({
 plugin.back = new plugin_1.Actions({
     default: {},
     _willAppear({ context, payload }) {
-        const svg = renderer.renderActionButton('Back');
+        const repoPath = getActiveRepoPath();
+        const svg = repoPath
+            ? renderer.renderActionWithRepo('Back', repoPath.split(/[/\\]/).pop() || repoPath)
+            : renderer.renderActionButton('Back', '#4a4a4a');
         plugin.setImage(context, `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`);
     },
     _willDisappear({ context }) { },
