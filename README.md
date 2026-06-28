@@ -7,6 +7,7 @@ A collection of plugins for the [VSDinside Stream Dock](https://www.hotspot.com/
 | Plugin | Description |
 |--------|-------------|
 | [Shelly Control](it.devthis.shellycontrol.sdPlugin/README.md) | Control Shelly smart relays (Gen1 and Gen2+) directly from your Stream Dock. Supports toggle, on, and off commands, state polling, and multiple channels. |
+| [Git Workspace Manager](it.devthis.gitworkspacemanager.sdPlugin/) | Monitor and manage local Git repositories from your Stream Deck. One button per repo: see branch, ahead/behind, dirty state. Execute fetch, pull, push, sync with one press. |
 
 ## Deployment
 
@@ -17,6 +18,12 @@ python3 deploy.py [<plugin-folder>]
 ```
 
 Default plugin folder: `it.devthis.shellycontrol.sdPlugin`
+
+Examples:
+```bash
+python3 deploy.py it.devthis.shellycontrol.sdPlugin
+python3 deploy.py it.devthis.gitworkspacemanager.sdPlugin
+```
 
 ### Plugin locations by OS
 
